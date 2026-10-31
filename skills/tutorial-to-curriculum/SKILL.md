@@ -72,7 +72,9 @@ Structure the manual into **numbered diagnostic modules (`M1` through `M6`) and 
 For each `[M#.#]` section, include:
 1. **The Tactical Rule & Physical/Visual "Why"**: Exact numeric values (e.g., focal lengths, f-stops, frame counts, wattage, node math) and *why* the style breaks if you violate them.
 2. **Visual Proof**: Embedded/linked contact sheets (`ref_<slug>/sheets/...`) and high-res crops (`ref_<slug>/crops/...`) with tile-by-tile commentary.
-3. **GUI-to-Code Translation**: Show both how the human instructor did it in the GUI/add-on AND the exact, copy-pasteable programmatic code (`bpy`, TypeScript, etc.) that achieves the identical result headlessly.
+3. **Tactical Workflow & Architecture Specification (NO Copy-Paste Solution Scripts in Student Manual)**:
+   - Document the exact node connections, bone hierarchies, mathematical rules, and step-by-step operations from the tutorial **without** placing pre-written solution scripts in the student manual/PDF. The AI student must synthesize the visual sheets and tactical rules to author its own scripts from scratch during the Quizzes and Final Tests.
+   - Store all reference code implementations inside the **Instructor Grading Guide (`user_grading_guide_and_rubrics.md`)** as the gold-standard solution key.
 4. **Common Pitfalls & Anti-Patterns**: What goes wrong (e.g., deleting parent empties without `CLEAR_KEEP_TRANSFORM`, using Time Stretching after keyframing, denoising *after* camera DoF) and how to prevent it.
 
 ---
