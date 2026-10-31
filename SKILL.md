@@ -76,30 +76,36 @@ For each `[M#.#]` section, include:
    - Document the exact node connections, bone hierarchies, mathematical rules, and step-by-step operations from the tutorial **without** placing pre-written solution scripts in the student manual/PDF. The AI student must synthesize the visual sheets and tactical rules to author its own scripts from scratch during the Quizzes and Final Tests.
    - Store all reference code implementations inside the **Instructor Grading Guide (`user_grading_guide_and_rubrics.md`)** as the gold-standard solution key.
 4. **Common Pitfalls & Anti-Patterns**: What goes wrong (e.g., deleting parent empties without `CLEAR_KEEP_TRANSFORM`, using Time Stretching after keyframing, denoising *after* camera DoF) and how to prevent it.
+5. **Final Module (`[M7]`): Autonomous Idea-to-Video Production Playbook**:
+   - Always conclude the manual with a post-graduation production playbook (`Beat-Sheet & Frame Budgeting -> Modular Asset/Rig Generation -> Self-QC Pre-Flight Check -> Crash-Safe PNG Sequence Render + FFmpeg .mp4 Compilation`) so that once the AI passes the curriculum, the user can simply hand it a 1-sentence story idea and receive a finished, playable `.mp4` video in that style.
 
 ---
 
-## Step 4: Build the Multi-Tier Assessment Suite & Diagnostic Scoring System
+## Step 4: Build the Multi-Tier Output-Quality Assessment Suite, Batch-Review Schedule & Diagnostic Rubric
 
-Create a complete assessment package in `ref_<slug>/assessments/` (or inside the manual + dedicated test files) consisting of **two versions of every assessment**:
-- **Student Version (for the AI)**: Contains only the prompts, reference image strips, starter specifications, and required deliverable format (no answers).
-- **Instructor / User Grading Guide**: Contains the answer keys, point breakdowns, visual inspection checklists, automated grading script usage, and **Diagnostic Error-Routing Tables**.
+Create a complete assessment package in `ref_<slug>/assessments/` (plus a unified student `.md` and `.pdf` bundle in `docs/`) consisting of **two versions of every assessment**:
+- **Student Version (for the AI)**: Contains the practical output-quality quizzes, the mandatory **Batch-Review Dependency Schedule**, reference image strips, and final test specifications (zero answer keys or pre-written solution code).
+- **Instructor / User Grading Guide**: Contains the batch-review instructions, visual + programmatic rubrics, reference solution code library, automated grading script usage, and **Diagnostic Error-Routing Tables**.
 
-### Required Assessments
-1. **Modular Quizzes (Quizzes 1–4)**:
-   - Short, targeted quizzes after major module groups (e.g., Quiz 1: Asset Pipeline, Scale & Shaders `[M1–M2]`; Quiz 2: Rigging & Facial Systems `[M3]`; Quiz 3: Stop-Motion Animation, Walk Cycles & Dynamic Parenting `[M4]`; Quiz 4: Cinematography, Rendering & Nuke/Blender Compositing `[M5–M6]`).
-   - Mix multiple-choice, visual diagnosis ("Look at `crops/cNN.png` — which node/bone setting is wrong and why?"), and short code-snippet debugging.
-2. **Final Test 1 — The 1:1 Replication (Copy) Test**:
-   - Extract a short (3–6 second) showcase sequence from the playlist into a **frame-by-frame screenshot strip (`sheets/test1_copy_reference_strip.jpg`)** + exact frame timing sheet (`assessments/test1_spec.json`).
-   - Task the AI to write a script that reproduces the camera framing, lighting, rig poses, keyframe timing, camera cuts/zooms, and compositing 1:1.
-3. **Final Test 2 — The Creative & Tactical Execution Test**:
-   - Give the AI a brand-new scenario (new narrative beat, character interaction, prop handoff, locomotion + camera move + VFX) that requires combining *all* modules `[M1–M6]` creatively without a frame-by-frame template to copy.
+### Required Assessments & Batch-Review Architecture
+1. **Practical Output-Quality Quizzes (Quizzes 1–4 — NOT Text Trivia)**:
+   - Quizzes must be **hands-on output-quality challenges** where the AI writes a script to recreate a model/shader (`Quiz 1`), rig/pose characters & props (`Quiz 2`), animate locomotion/physics (`Quiz 3`), or light/composite a shot (`Quiz 4`), outputting both a scene file and a rendered verification sheet for the user to grade.
+   - **Mandatory Dependency Graph & Batch-Review Schedule (`STOP FOR USER REVIEW` Gates)**:
+     - Map out which quizzes are foundational prerequisites vs. which quizzes are independent and can be executed/reviewed in parallel batches:
+       - **Batch 1 (Foundational Gate)**: `Quiz 1` (Models, Scale, Materials). *AI must stop and wait for user review before proceeding.*
+       - **Batch 2 (Parallel Independent Systems)**: e.g., `Quiz 2` (Rigging) + `Quiz 4` (Optics & Compositing) if both depend on `Quiz 1` but not on each other. *AI executes both in one batch, then stops for user batch review.*
+       - **Batch 3 (Dependent Synthesis Gate)**: e.g., `Quiz 3` (Walk Cycle & Dynamic Physics, which requires the verified rig from `Quiz 2`). *AI stops for user review before unlocking the Final Tests.*
+2. **Final Test 1 — The 1:1 Source Replication (Copy) Test (`100 Points`)**:
+   - Extract both the **Final Rendered Showcase Strip (`sheets/test1_rendered_target_strip.jpg`)** and the **Viewport Breakdown Strip (`sheets/test1_copy_reference_strip.jpg`)** from a showcase clip in the playlist.
+   - Task the AI to visually inspect the source strips and replicate the set, custom markings, lighting, camera framing, poses, cuts, and compositing 1:1, outputting a `.blend` scene, a `3×3` side-by-side comparison sheet, and a playable `.mp4` video.
+3. **Final Test 2 — The Creative & Principle-Mastery Test (`100 Points`)**:
+   - Give the AI an **open-ended creative brief** (the AI invents its own original story beat, setting, and characters) and grade it on how faithfully it applies the **Core Style Principles (`[M1]`–`[M7]`)** without a reference template to copy, outputting a `.blend` scene, a `3×3` storyboard sheet, and a finished playable `.mp4` short film.
 4. **Automated + Human Rubric & Diagnostic Scoring System (`100-Point Scale`)**:
-   - Provide an automated verification script (e.g., `grade_submission.py`) that inspects the AI's generated `.blend` / code / rendered frames for objective parameters (FPS, clip end, F-stop, bone hierarchy, keyframe interpolation types, compositor nodes) and outputs a structured score report.
-   - Pair every rubric row with its **`[M#.#]` Remediation Pointer** so any deduction (< full points) immediately tells both the User and the AI student:
+   - Provide an automated verification script (`grade_submission.py --quiz <1-4>` and `--test <1-2>`) that inspects the AI's generated scene/code and outputs a structured score report.
+   - Pair every rubric row with its **`[M#.#]` Remediation Pointer** so any deduction immediately tells both the User and the AI student:
      - **What failed**
      - **Which exact `[M#.#]` section & screenshot to re-read**
-     - **How to fix it on retry**
+     - **How to fix it before unlocking the next review batch**
 
 ### Diagnostic Score Bands
 | Score Range | Tier | Meaning & Next Action |
